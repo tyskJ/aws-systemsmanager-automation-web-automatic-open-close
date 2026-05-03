@@ -81,3 +81,16 @@ module "ec2" {
   sg_id                 = module.sg.id_sg["ec2"]
   isntance_profile_name = module.iam_role.instance_profile_name
 }
+
+/************************************************************
+ALB
+************************************************************/
+module "alb" {
+  source = "../modules/alb"
+
+  vpc_id      = module.vpc.id_vpc
+  instance_id = module.ec2.id_instanceid
+  subnet_ids  = module.subnet.id_subnet
+  sg_id       = module.sg.id_sg["alb"]
+  region      = local.region_name
+}
