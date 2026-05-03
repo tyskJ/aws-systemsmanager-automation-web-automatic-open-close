@@ -14,3 +14,12 @@ module "subnet" {
   vpc_id = module.vpc.id_vpc
   region = local.region_name
 }
+
+/************************************************************
+Internet Gateway
+************************************************************/
+module "igw" {
+  source = "../modules/internet_gateway"
+
+  vpc_id = module.vpc.id_vpc
+}
