@@ -136,3 +136,5 @@ AWS Systems Manager Automation で自動開閉局を実装してみた
 * `Terraformで自己署名証明書の作成からALBの適用までを一発で実施する - DevelopersIO <https://dev.classmethod.jp/articles/terraform-self-signed-certificate-alb-setup/>`_
 * `aws login コマンドの認証情報で Terraform を実行する - Zenn <https://zenn.dev/yukit7s/articles/4a81811d64a200>`_
 * `OpenAPI Specification 3.0.3規約 <https://future-architect.github.io/coding-standards/documents/forOpenAPISpecification/OpenAPI_Specification_3.0.3.html>`_
+* `Terraform AWS Provider version 6がリリースされ、複数リージョンへの展開がかなり簡単になりました - DevelopersIO <https://dev.classmethod.jp/articles/terraform-aws-provider-version-6/>`_
+* `【Terraform】AWS Provider v6 からはリソースレベルでリージョンを設定できる - Zenn <https://zenn.dev/terraform_jp/articles/tf-aws-v6-per-resource-region>`_
