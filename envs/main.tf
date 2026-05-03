@@ -48,3 +48,13 @@ module "rtb" {
   igw_id     = module.igw.id_igw
   ngw_id     = module.ngw.id_ngw
 }
+
+/************************************************************
+Security Group
+************************************************************/
+module "sg" {
+  source = "../modules/security_group"
+
+  vpc_id    = module.vpc.id_vpc
+  source_ip = var.source_ip
+}
