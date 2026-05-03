@@ -36,3 +36,15 @@ module "ngw" {
   vpc_id = module.vpc.id_vpc
   region = local.region_name
 }
+
+/************************************************************
+Route Table
+************************************************************/
+module "rtb" {
+  source = "../modules/route_table"
+
+  vpc_id     = module.vpc.id_vpc
+  subnet_ids = module.subnet.id_subnet
+  igw_id     = module.igw.id_igw
+  ngw_id     = module.ngw.id_ngw
+}
