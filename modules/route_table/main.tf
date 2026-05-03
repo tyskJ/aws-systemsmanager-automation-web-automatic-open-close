@@ -31,5 +31,5 @@ resource "aws_route" "public_rtb_to_igw" {
 resource "aws_route" "private_rtb_to_ngw" {
   route_table_id         = aws_route_table.this["private"].id
   destination_cidr_block = "0.0.0.0/0"
-  gateway_id             = var.ngw_id
+  nat_gateway_id         = var.ngw_id
 }
