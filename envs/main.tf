@@ -58,3 +58,12 @@ module "sg" {
   vpc_id    = module.vpc.id_vpc
   source_ip = var.source_ip
 }
+
+/************************************************************
+IAM Role
+************************************************************/
+module "iam_role" {
+  source = "../modules/iam_role"
+
+  partition = local.partition_name
+}

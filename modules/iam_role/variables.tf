@@ -1,0 +1,3 @@
+variable "partition" {
+  type = string
+}
