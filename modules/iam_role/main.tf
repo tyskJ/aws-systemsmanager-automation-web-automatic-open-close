@@ -23,7 +23,8 @@ resource "aws_iam_role" "ec2" {
 
 resource "aws_iam_role_policy_attachment" "ec2" {
   for_each = {
-    ssm = "arn:${var.partition}:iam::aws:policy/AmazonSSMManagedInstanceCore"
+    ssm        = "arn:${var.partition}:iam::aws:policy/AmazonSSMManagedInstanceCore"
+    cloudwatch = "arn:${var.partition}:iam::aws:policy/CloudWatchAgentAdminPolicy"
   }
   role       = aws_iam_role.ec2.name
   policy_arn = each.value
