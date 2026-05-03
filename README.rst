@@ -79,19 +79,32 @@ AWS Systems Manager Automation で自動開閉局を実装してみた
   profile = "admin"
   EOF
 
-2. *Terraform* 初期化
+2. 変数ファイル作成
+---------------------------------------------------------------------
+
+.. note::
+
+  * *envs* フォルダ配下に作成すること
+
+.. code-block:: bash
+
+  cat <<EOF > aws.auto.tfvars
+  source_ip = "接続元IPアドレス(CIDR形式)"
+  EOF
+
+3. *Terraform* 初期化
 ---------------------------------------------------------------------
 .. code-block:: bash
   
   terraform init -backend-config="./config.aws.tfbackend"
 
-3. 事前確認
+4. 事前確認
 ---------------------------------------------------------------------
 .. code-block:: bash
 
   terraform plan
 
-4. デプロイ
+5. デプロイ
 ---------------------------------------------------------------------
 .. code-block:: bash
 
