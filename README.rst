@@ -151,3 +151,4 @@ AWS Systems Manager Automation で自動開閉局を実装してみた
 * `OpenAPI Specification 3.0.3規約 <https://future-architect.github.io/coding-standards/documents/forOpenAPISpecification/OpenAPI_Specification_3.0.3.html>`_
 * `Terraform AWS Provider version 6がリリースされ、複数リージョンへの展開がかなり簡単になりました - DevelopersIO <https://dev.classmethod.jp/articles/terraform-aws-provider-version-6/>`_
 * `【Terraform】AWS Provider v6 からはリソースレベルでリージョンを設定できる - Zenn <https://zenn.dev/terraform_jp/articles/tf-aws-v6-per-resource-region>`_
+* `AWS監視基盤移管で踏んだ落とし穴 <https://cloud5.jp/awsmonitoring/>`_

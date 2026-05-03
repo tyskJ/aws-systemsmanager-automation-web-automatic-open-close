@@ -67,3 +67,17 @@ module "iam_role" {
 
   partition = local.partition_name
 }
+
+/************************************************************
+EC2
+************************************************************/
+module "ec2" {
+  source = "../modules/ec2"
+  depends_on = [
+    module.rtb
+  ]
+
+  subnet_id             = module.subnet.id_subnet["private_1a"]
+  sg_id                 = module.sg.id_sg["ec2"]
+  isntance_profile_name = module.iam_role.instance_profile_name
+}

@@ -1,0 +1,26 @@
+{
+  "agent": {
+    "metrics_collection_interval": 60
+  },
+  "metrics": {
+    "append_dimensions": {
+      "InstanceId": "${aws:InstanceId}"
+    },
+    "aggregation_dimensions": [["InstanceId"]],
+    "metrics_collected": {
+      "disk": {
+        "measurement": ["disk_used_percent"],
+        "resources": ["/"]
+      },
+      "mem": {
+        "measurement": ["mem_used_percent"]
+      },
+      "procstat": [
+        {
+          "exe": "nginx",
+          "measurement": ["pid_count"]
+        }
+      ]
+    }
+  }
+}
