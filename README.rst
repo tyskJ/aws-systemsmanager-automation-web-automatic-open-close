@@ -51,13 +51,14 @@ AWS Systems Manager Automation で自動開閉局を実装してみた
 =====================================================================
 1. *tfstate* 用S3バケット作成
 ---------------------------------------------------------------------
-.. code-block:: bash
-  
-  aws s3 mb s3://terraform-working --profile admin
 
 .. note::
 
   * バケット名は全世界で一意である必要があるため、作成に失敗した場合は任意の名前に変更
+
+.. code-block:: bash
+  
+  aws s3 mb s3://terraform-working --profile admin
 
 実作業 - ローカル -
 =====================================================================
@@ -67,6 +68,7 @@ AWS Systems Manager Automation で自動開閉局を実装してみた
 .. note::
 
   * *envs* フォルダ配下に作成すること
+  * *事前作業(2)* で作成したバケット名に合わせること
 
 .. code-block:: bash
     
@@ -76,10 +78,6 @@ AWS Systems Manager Automation で自動開閉局を実装してみた
   region = "ap-northeast-1"
   profile = "admin"
   EOF
-
-.. note::
-
-  * *事前作業(2)* で作成したバケット名に合わせること
 
 2. *Terraform* 初期化
 ---------------------------------------------------------------------
@@ -109,14 +107,15 @@ AWS Systems Manager Automation で自動開閉局を実装してみた
 
 2. *tfstate* 用S3バケット削除
 ---------------------------------------------------------------------
-.. code-block:: bash
-
-  aws s3 rm s3://terraform-working --recursive --profile admin
-  aws s3 rb s3://terraform-working --profile admin
 
 .. note::
 
   * *事前作業(2)* で作成したバケット名に合わせること
+
+.. code-block:: bash
+
+  aws s3 rm s3://terraform-working --recursive --profile admin
+  aws s3 rb s3://terraform-working --profile admin
 
 参考資料
 =====================================================================
