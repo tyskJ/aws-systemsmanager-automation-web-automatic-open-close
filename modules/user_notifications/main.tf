@@ -48,7 +48,7 @@ resource "aws_notifications_event_rule" "cloudwatch" {
 Channel Association
 ************************************************************/
 ### CloudWatch
-# resource "aws_notifications_channel_association" "email" {
-#   arn                            = aws_notificationscontacts_email_contact.email.arn
-#   notification_configuration_arn = aws_notifications_notification_configuration.cloudwatch.arn
-# }
+resource "aws_notifications_channel_association" "email" {
+  arn                            = aws_notificationscontacts_email_contact.email.arn
+  notification_configuration_arn = aws_notifications_notification_configuration.cloudwatch.arn
+}

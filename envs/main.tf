@@ -98,9 +98,9 @@ module "alb" {
 /************************************************************
 User Notifications
 ************************************************************/
-module "aun" {
-  source = "../modules/user_notifications"
+# module "aun" {
+#   source = "../modules/user_notifications"
 
-  region = local.region_name
-  email  = var.email_address
-}
+#   region = local.region_name
+#   email  = var.email_address
+# }
