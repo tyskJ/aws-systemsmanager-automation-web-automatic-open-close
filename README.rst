@@ -1,7 +1,7 @@
 .. image:: ./doc/001samune.png
 
 =====================================================================
-AWS Systems Manager Automation で自動開閉局を実装してみた
+AWS Systems Manager Documents (Automation runbook) で自動開閉局を実装してみた
 =====================================================================
 * `詳細 <>`_
 
