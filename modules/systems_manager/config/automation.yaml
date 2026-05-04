@@ -1,0 +1,123 @@
+schemaVersion: "0.3"
+description: |-
+  # 自動開閉局Automation Runbook
+  1. Systems Manager Change Calender の状態を取得
+  1. OPEN の場合は開局を実施
+  1. CLOSED の場合は閉局を実施
+parameters:
+  InstanceId:
+    type: String
+    description: Target Instance Id
+  ListenerRuleArn:
+    type: String
+    description: ListenerRuleArn
+  TargetGroupArn:
+    type: String
+    description: TargetGroup Arn
+  AssumeRoleArn:
+    type: String
+    description: SSM Automation Assume Role Arn
+  ChangeCalenderName:
+    type: String
+    description: Change Calender Name
+assumeRole: "{{ AssumeRoleArn }}"
+mainSteps:
+  - name: GetCalendarState
+    action: aws:executeAwsApi
+    nextStep: Open_or_Close
+    isEnd: false
+    inputs:
+      Service: ssm
+      Api: GetCalendarState
+      CalendarNames:
+        - "{{ ChangeCalenderName }}"
+    outputs:
+      - Type: String
+        Name: CurrentState
+        Selector: $.State
+  - name: Open_or_Close
+    action: aws:branch
+    isEnd: true
+    inputs:
+      Choices:
+        - NextStep: StartInstances
+          Variable: "{{ GetCalendarState.CurrentState }}"
+          StringEquals: OPEN
+        - NextStep: SetRulePriorities_1
+          Variable: "{{ GetCalendarState.CurrentState }}"
+          StringEquals: CLOSED
+  - name: StartInstances
+    action: aws:executeAwsApi
+    nextStep: WaitRunningInstance
+    isEnd: false
+    inputs:
+      Service: ec2
+      Api: StartInstances
+      InstanceIds:
+        - "{{ InstanceId }}"
+  - name: WaitRunningInstance
+    action: aws:waitForAwsResourceProperty
+    nextStep: WaitTargetGroupHealth
+    isEnd: false
+    inputs:
+      Service: ec2
+      Api: DescribeInstanceStatus
+      PropertySelector: $.InstanceStatuses[0].InstanceState.Name
+      DesiredValues:
+        - running
+      InstanceIds:
+        - "{{ InstanceId }}"
+      IncludeAllInstances: true
+  - name: WaitTargetGroupHealth
+    action: aws:waitForAwsResourceProperty
+    nextStep: SetRulePriorities_100
+    isEnd: false
+    inputs:
+      Service: elbv2
+      Api: DescribeTargetHealth
+      PropertySelector: $.TargetHealthDescriptions[0].TargetHealth.State
+      DesiredValues:
+        - healthy
+      Targets:
+        - Id: "{{ InstanceId }}"
+      TargetGroupArn: "{{ TargetGroupArn }}"
+  - name: SetRulePriorities_100
+    action: aws:executeAwsApi
+    isEnd: true
+    inputs:
+      Service: elbv2
+      Api: SetRulePriorities
+      RulePriorities:
+        - Priority: 100
+          RuleArn: "{{ ListenerRuleArn }}"
+  - name: SetRulePriorities_1
+    action: aws:executeAwsApi
+    nextStep: StopInstances
+    isEnd: false
+    inputs:
+      Service: elbv2
+      Api: SetRulePriorities
+      RulePriorities:
+        - Priority: 1
+          RuleArn: "{{ ListenerRuleArn }}"
+  - name: StopInstances
+    action: aws:executeAwsApi
+    nextStep: WaitStoppedInstance
+    isEnd: false
+    inputs:
+      Service: ec2
+      Api: StopInstances
+      InstanceIds:
+        - "{{ InstanceId }}"
+  - name: WaitStoppedInstance
+    action: aws:waitForAwsResourceProperty
+    isEnd: true
+    inputs:
+      Service: ec2
+      Api: DescribeInstanceStatus
+      PropertySelector: $.InstanceStatuses[0].InstanceState.Name
+      DesiredValues:
+        - stopped
+      InstanceIds:
+        - "{{ InstanceId }}"
+      IncludeAllInstances: true

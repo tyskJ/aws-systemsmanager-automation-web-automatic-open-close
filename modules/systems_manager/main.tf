@@ -29,3 +29,14 @@ resource "aws_ssm_document" "change_calender" {
     Name = "auto-open-close-calender"
   }
 }
+
+### Automation runbook
+resource "aws_ssm_document" "automation" {
+  name            = "Custom-AutoOpenClose"
+  document_type   = "Automation"
+  document_format = "YAML"
+  content         = file("${path.module}/config/automation.yaml")
+  tags = {
+    Name = "Custom-AutoOpenClose"
+  }
+}
