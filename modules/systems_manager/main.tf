@@ -14,8 +14,7 @@ resource "aws_ssm_document" "change_calender" {
     X-WR-CALDESC:Calendar for managing automated opening and closing stations
     X-CALENDAR-CMEVENTS:DISABLED
     BEGIN:VEVENT
-    DTSTAMP:20260504T101206Z
-    UID:1566dd11-c8e4-4e1f-a55c-29410503c8a8
+    UID:open-close
     SEQUENCE:0
     SUMMARY:open-event
     DESCRIPTION:Operating hours
