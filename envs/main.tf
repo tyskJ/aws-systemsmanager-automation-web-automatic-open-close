@@ -94,3 +94,13 @@ module "alb" {
   sg_id       = module.sg.id_sg["alb"]
   region      = local.region_name
 }
+
+/************************************************************
+User Notifications
+************************************************************/
+module "aun" {
+  source = "../modules/user_notifications"
+
+  region = local.region_name
+  email  = var.email_address
+}
