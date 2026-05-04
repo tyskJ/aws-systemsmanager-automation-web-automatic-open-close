@@ -90,6 +90,7 @@ AWS Systems Manager Automation で自動開閉局を実装してみた
 
   cat <<EOF > aws.auto.tfvars
   source_ip = "接続元IPアドレス(CIDR形式)"
+  email_address = "メールアドレス"
   EOF
 
 3. *Terraform* 初期化
