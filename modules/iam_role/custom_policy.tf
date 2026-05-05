@@ -48,3 +48,26 @@ resource "aws_iam_policy" "ssm_automation" {
     ]
   })
 }
+
+/************************************************************
+Event Bridge
+************************************************************/
+resource "aws_iam_policy" "event_bridge" {
+  name = "iam-policy-event-bridge"
+  tags = {
+    Name = "iam-policy-event-bridge"
+  }
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Sid    = "AllowSSM"
+        Effect = "Allow"
+        Action = [
+          "ssm:StartAutomationExecution"
+        ]
+        Resource = ["*"]
+      }
+    ]
+  })
+}

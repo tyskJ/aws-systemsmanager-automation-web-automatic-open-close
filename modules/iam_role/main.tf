@@ -70,3 +70,35 @@ resource "aws_iam_role_policy_attachment" "ssm" {
   role       = aws_iam_role.ssm.name
   policy_arn = each.value
 }
+
+/************************************************************
+Event Bridge Role
+************************************************************/
+resource "aws_iam_role" "event_bridge" {
+  name = "eventbridge-role"
+  tags = {
+    Name = "eventbridge-role"
+  }
+  description = "Allows CloudWatch Events to invoke targets and perform actions in built-in targets on your behalf."
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Sid    = ""
+        Effect = "Allow"
+        Principal = {
+          Service = "events.amazonaws.com"
+        }
+        Action = "sts:AssumeRole"
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "event_bridge" {
+  for_each = {
+    event_bridge = aws_iam_policy.event_bridge.arn
+  }
+  role       = aws_iam_role.event_bridge.name
+  policy_arn = each.value
+}
