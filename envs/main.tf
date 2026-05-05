@@ -114,9 +114,27 @@ module "ssm" {
 /************************************************************
 User Notifications
 ************************************************************/
-# module "aun" {
-#   source = "../modules/user_notifications"
+module "aun" {
+  source = "../modules/user_notifications"
 
-#   region = local.region_name
-#   email  = var.email_address
-# }
+  region = local.region_name
+  email  = var.email_address
+}
+
+/************************************************************
+Event Bridge
+************************************************************/
+module "event_bridge" {
+  source = "../modules/event_bridge"
+
+  changecalender_arn             = module.ssm.arn_changecalender_document
+  automation_arn                 = module.ssm.arn_automation_document
+  ssm_role_arn                   = module.iam_role.arn_ssm_role
+  change_calender_name           = module.ssm.name_changecalender_document
+  instance_id                    = module.ec2.id_instanceid
+  listener_rule_arn              = module.alb.arn_listener_rule
+  targetgroup_arn                = module.alb.arn_targetgroup
+  notification_configuration_arn = module.aun.arn_notification_configuration
+  delivery_channel_arn           = module.aun.arn_delivery_channel
+  event_bridge_role_arn          = module.iam_role.arn_event_bridge_role
+}
