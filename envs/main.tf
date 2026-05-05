@@ -124,8 +124,8 @@ module "aun" {
 /************************************************************
 Event Bridge
 ************************************************************/
-module "event_bridge" {
-  source = "../modules/event_bridge"
+module "eventbridge" {
+  source = "../modules/eventbridge"
 
   changecalender_arn             = module.ssm.arn_changecalender_document
   automation_arn                 = module.ssm.arn_automation_document
@@ -136,5 +136,5 @@ module "event_bridge" {
   targetgroup_arn                = module.alb.arn_targetgroup
   notification_configuration_arn = module.aun.arn_notification_configuration
   delivery_channel_arn           = module.aun.arn_delivery_channel
-  event_bridge_role_arn          = module.iam_role.arn_event_bridge_role
+  eventbridge_role_arn          = module.iam_role.arn_eventbridge_role
 }

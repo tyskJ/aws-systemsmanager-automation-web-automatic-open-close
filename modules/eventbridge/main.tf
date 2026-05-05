@@ -32,5 +32,5 @@ resource "aws_cloudwatch_event_target" "ssm_automation" {
     NotificationConfigurationArn = [var.notification_configuration_arn]
     ChannelArn                   = [var.delivery_channel_arn]
   })
-  role_arn = var.event_bridge_role_arn
+  role_arn = var.eventbridge_role_arn
 }

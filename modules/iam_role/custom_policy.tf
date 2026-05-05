@@ -50,12 +50,12 @@ resource "aws_iam_policy" "ssm_automation" {
 }
 
 /************************************************************
-Event Bridge
+EventBridge
 ************************************************************/
-resource "aws_iam_policy" "event_bridge" {
-  name = "iam-policy-event-bridge"
+resource "aws_iam_policy" "eventbridge" {
+  name = "iam-policy-eventbridge"
   tags = {
-    Name = "iam-policy-event-bridge"
+    Name = "iam-policy-eventbridge"
   }
   policy = jsonencode({
     Version = "2012-10-17",

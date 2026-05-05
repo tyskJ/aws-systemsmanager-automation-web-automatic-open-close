@@ -34,6 +34,6 @@ variable "delivery_channel_arn" {
   type = string
 }
 
-variable "event_bridge_role_arn" {
+variable "eventbridge_role_arn" {
   type = string
 }

@@ -6,6 +6,6 @@ output "arn_ssm_role" {
   value = aws_iam_role.ssm.arn
 }
 
-output "arn_event_bridge_role" {
-  value = aws_iam_role.event_bridge.arn
+output "arn_eventbridge_role" {
+  value = aws_iam_role.eventbridge.arn
 }

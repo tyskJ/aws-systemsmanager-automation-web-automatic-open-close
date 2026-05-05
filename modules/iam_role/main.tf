@@ -72,9 +72,9 @@ resource "aws_iam_role_policy_attachment" "ssm" {
 }
 
 /************************************************************
-Event Bridge Role
+EventBridge Role
 ************************************************************/
-resource "aws_iam_role" "event_bridge" {
+resource "aws_iam_role" "eventbridge" {
   name = "eventbridge-role"
   tags = {
     Name = "eventbridge-role"
@@ -95,10 +95,10 @@ resource "aws_iam_role" "event_bridge" {
   })
 }
 
-resource "aws_iam_role_policy_attachment" "event_bridge" {
+resource "aws_iam_role_policy_attachment" "eventbridge" {
   for_each = {
-    event_bridge = aws_iam_policy.event_bridge.arn
+    event_bridge = aws_iam_policy.eventbridge.arn
   }
-  role       = aws_iam_role.event_bridge.name
+  role       = aws_iam_role.eventbridge.name
   policy_arn = each.value
 }
