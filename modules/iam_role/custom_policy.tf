@@ -35,6 +35,15 @@ resource "aws_iam_policy" "ssm_automation" {
           "ec2:StopInstances"
         ]
         Resource = ["*"]
+      },
+      {
+        Sid    = "AllowAun"
+        Effect = "Allow"
+        Action = [
+          "notifications:DisassociateChannel",
+          "notifications:AssociateChannel"
+        ]
+        Resource = ["*"]
       }
     ]
   })

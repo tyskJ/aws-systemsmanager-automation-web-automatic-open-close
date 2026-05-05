@@ -20,6 +20,12 @@ parameters:
   ChangeCalenderName:
     type: String
     description: Change Calender Name
+  NotificationConfigurationArn:
+    type: String
+    description: Target Notification Configuration
+  ChannelArn:
+    type: String
+    description: Target Delivery Channel
 assumeRole: "{{ AssumeRoleArn }}"
 mainSteps:
   - name: GetCalendarState
@@ -43,9 +49,41 @@ mainSteps:
         - NextStep: StartInstances
           Variable: "{{ GetCalendarState.CurrentState }}"
           StringEquals: OPEN
-        - NextStep: SetRulePriorities_1
+        - NextStep: DisassociateAunChannel
           Variable: "{{ GetCalendarState.CurrentState }}"
           StringEquals: CLOSED
+  - name: DisassociateAunChannel
+    action: aws:executeScript
+    nextStep: SetRulePriorities_1
+    isEnd: false
+    inputs:
+      Runtime: python3.11
+      Handler: disassociate_channel
+      Script: |-
+        def disassociate_channel(events, context):
+          import boto3
+          aun = boto3.client('notifications', region_name="us-east-1")
+
+          try:
+            # Disassociate channel
+            aun.disassociate_channel(
+                notificationConfigurationArn=events['ConfArn'],
+                arn=events['ChannelArn']
+            )
+
+            return {
+                "status": "success",
+                "message": "Channel disassociated"
+            }
+
+          except Exception as e:
+            return {
+                "status": "error",
+                "message": str(e)
+            }
+      InputPayload:
+        ConfArn: "{{ NotificationConfigurationArn }}"
+        ChannelArn: "{{ ChannelArn }}"
   - name: StartInstances
     action: aws:executeAwsApi
     nextStep: WaitRunningInstance
@@ -83,13 +121,45 @@ mainSteps:
       TargetGroupArn: "{{ TargetGroupArn }}"
   - name: SetRulePriorities_100
     action: aws:executeAwsApi
-    isEnd: true
+    nextStep: AssociateAunChannel
+    isEnd: false
     inputs:
       Service: elbv2
       Api: SetRulePriorities
       RulePriorities:
         - Priority: 100
           RuleArn: "{{ ListenerRuleArn }}"
+  - name: AssociateAunChannel
+    action: aws:executeScript
+    isEnd: true
+    inputs:
+      Runtime: python3.11
+      Handler: associate_channel
+      Script: |-
+        def associate_channel(events, context):
+          import boto3
+          aun = boto3.client('notifications', region_name="us-east-1")
+
+          try:
+            # Associate channel
+            aun.associate_channel(
+                notificationConfigurationArn=events['ConfArn'],
+                arn=events['ChannelArn']
+            )
+
+            return {
+                "status": "success",
+                "message": "Channel associated"
+            }
+
+          except Exception as e:
+            return {
+                "status": "error",
+                "message": str(e)
+            }
+      InputPayload:
+        ConfArn: "{{ NotificationConfigurationArn }}"
+        ChannelArn: "{{ ChannelArn }}"
   - name: SetRulePriorities_1
     action: aws:executeAwsApi
     nextStep: StopInstances
