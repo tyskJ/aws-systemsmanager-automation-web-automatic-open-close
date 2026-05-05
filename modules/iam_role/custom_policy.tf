@@ -67,6 +67,17 @@ resource "aws_iam_policy" "event_bridge" {
           "ssm:StartAutomationExecution"
         ]
         Resource = ["*"]
+      },
+      {
+        Sid    = "AllowPassRole"
+        Effect = "Allow"
+        Action = [
+          "iam:PassRole"
+        ]
+        Resource = ["*"],
+        Condition = {
+          StringEquals : { "iam:PassedToService" : "ssm.amazonaws.com" }
+        }
       }
     ]
   })
